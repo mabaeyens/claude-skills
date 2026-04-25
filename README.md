@@ -18,7 +18,8 @@ Skills are grouped by project under subdirectories.
 **Claude Code (CLI):**
 ```bash
 # Clone repo
-git clone git@github.com:mabaeyens/claude-skills.git ~/Documents/Projects/claude-skills
+git clone git@github.com:mabaeyens/claude-skills.git ~/Documents/Projects/claude-skills  # macOS
+# or wherever you keep projects on the target machine
 
 # Symlink each skill into ~/.claude/skills/
 mkdir -p ~/.claude/skills
