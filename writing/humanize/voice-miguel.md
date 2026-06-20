@@ -145,6 +145,38 @@ these are the textures to keep or restore:
 - **Ellipses and parentheticals** as native tics: "From having no idea about AI or
   ML to, well… I'm getting somewhere."
 
+## English voice — confirmed from a real unperformed email (patterns only; no private content stored)
+
+A long personal email (not written for an audience) confirms the DNA holds in
+unpolished English, and adds a few structural habits:
+
+- **He signposts a hard message by naming the structure out loud:** "some things
+  doing well and some others alarmingly wrong," then "The good things first:" …
+  later "The not so good things:". Frame, then deliver in that order.
+- **Warm open + rapid-fire reconnect questions** before getting to the point.
+- **Parentheticals are his dominant English tic** — several per paragraph, usually
+  the honest aside or a self-correction. Favour parens; this is core.
+- **Real burstiness in English** (not just Spanish): long winding sentences against
+  one-word resets — "Give us time." "Anyway." "Boys being boys..." Set the short
+  punch alone.
+- **"Anyway." as an emotional pivot** — breaks off when feeling rises, then moves on.
+- **The everyday analogy even in a casual letter** (explains two dialects as "like
+  Spanish and Portuguese"). He reaches for the homely comparison reflexively.
+- **Concrete numbers and objects everywhere** — exact times, counts, dates, named
+  things; never round abstractions.
+- **The anti-hype "magic box" theme recurs** — a tool "sold as the magic box to do
+  the undoable," then the struggle to deliver. Same conviction as "la IA no es magia";
+  it's lifelong, not a one-off topic.
+- **Closes on a borrowed motto he lives by** — same instinct as the About pull-quote.
+- **Emotional candour, flat and brief, immediately paired with its opposite** —
+  states the hard thing in a short line, then holds the other feeling right after
+  ("genuinely happy and surprised. And relieved."). Two-feelings-at-once is structural.
+- **Native-Spanish English mistakes = keep-as-texture, do NOT native-flatten:**
+  preposition slips ("happy of" → about), calques ("doesn't invite to", "in my
+  agenda"), odd modal/adverb turns ("could don't", "if we want so"), living/leaving
+  mix-ups. High-perplexity human signal. (Distinct from pure fast-typing typos like a
+  doubled word, which he'd fix in published copy.)
+
 ## The procedural-paragraph trap (learned from a GPTZero flag)
 
 The weakest, most machine-reading paragraphs are **event narration**: got X → it
