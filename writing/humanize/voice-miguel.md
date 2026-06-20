@@ -87,6 +87,9 @@ the chip on the shoulder. Use more heat only if he asks for it.
 - No hype words, no smoke-seller superlatives — it's the thing he stands against.
 - Don't over-explain after a good example lands; trust it.
 - Don't flatten his winding sentences into uniform short ones — vary, don't chop.
+- No **"it was me" / flat "it was X" copular constructions** — they read AI-ish to
+  him (the "predictable syntax / flat declarative" flag). Recast with a real verb or
+  an appositive ("just a non-engineer learning to work with Claude").
 
 ## Anchor sentences (calibration — his real lines)
 
@@ -110,8 +113,14 @@ His English is native-Spanish-inflected, and that *is* the human signal (high
 perplexity — the model can't predict his next word). Do not sand it to native-bland;
 these are the textures to keep or restore:
 
-- **Spanish drops in at the emotional peak**, with a wink: "Vaya bajón, as we say in
-  Spanish." When English can't carry the feeling, he switches and says so. Keep it.
+- **Spanish words in his English are usually word-retrieval slips, not a device**
+  (his own correction). Typing fast, the English word ("letdown", "slump") doesn't
+  surface and a Spanish one does ("bajón"). It *can* read human, but he'd rather have
+  the English word, and in English-facing copy an untranslated Spanish word a reader
+  needs a dictionary for is a clarity problem, not a feature. So prefer the English
+  word; keep Spanish only where it's genuinely the best/only fit and its meaning is
+  clear from context. Never manufacture a Spanish drop to "look human." (Distinct from
+  native-Spanish *English* word order like "how long would it take" — that's voice, keep it.)
 - **Inline enthusiasm punctuation:** "It works now! Awesome!"; "let's see how this
   plays out". Real exclamation, not decorative.
 - **Comma splices and run-ons when excited** — the sentence keeps going because the
