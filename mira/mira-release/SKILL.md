@@ -22,10 +22,35 @@ Single self-contained one-liners (no chains, no pipes) may run directly.
 
 ## Versioning convention
 
-- **MARKETING_VERSION**: always `0.1.<BUILD>` — patch equals build number.
-- **CURRENT_PROJECT_VERSION**: monotonically increasing integer. ASC rejects any upload ≤ a prior build.
+- **MARKETING_VERSION**: semantic `X.Y.Z`. Patch for routine releases, minor for a notable feature batch,
+  major (`1.0`) as a deliberate milestone. Set it directly in `project.pbxproj` (both configs).
+- **CURRENT_PROJECT_VERSION** (the build number): **resets to 1 at each new minor** (`X.Y.0`) and
+  **+1 per patch** within that minor — `0.3.0`→1, `0.3.1`→2, `0.3.2`→3, `0.4.0`→1. ASC-valid because each
+  marketing version is its own build-uniqueness train. **Never ship two builds under the same `X.Y.Z`** —
+  bump the patch instead.
+- `OllamaSearch/Info.plist` holds `CFBundleVersion = $(CURRENT_PROJECT_VERSION)` and
+  `CFBundleShortVersionString = $(MARKETING_VERSION)` — single source of truth in `project.pbxproj`,
+  Info.plist follows. **Never use `agvtool new-version`/`new-marketing-version`** — they overwrite those
+  variables with literals and reintroduce drift.
 - iOS and macOS share the same xcodeproj — always ship the same version and build.
-- Never use `agvtool new-marketing-version` — it corrupts Info.plist with a literal string.
+
+---
+
+## Release governance
+
+Mirrors the mira-core policy, adapted to Xcode/TestFlight.
+
+- **Semantic versioning.** Use `X.Y.Z` (see Versioning convention): patch for routine releases, minor for
+  a notable feature batch, major (`1.0`) for a deliberate milestone. The build number resets to 1 at each
+  new minor and +1 per patch. Don't bump major without the user asking.
+- **Tags and releases mark shipped builds, not commits.** The user commits freely and often; most
+  commits do NOT merit a version bump, a TestFlight build, a git tag, or a CHANGELOG entry. A
+  release (this skill, Steps 1–13) happens only when shipping to TestFlight; the tag created in
+  Step 12 folds in every commit before it.
+- **Packaging is Xcode/TestFlight, not VCS-derived.** Unlike mira-core (tag-driven wheels via
+  hatch-vcs), the version source of truth here is `project.pbxproj` (`MARKETING_VERSION` + build).
+  Bump it, archive, upload, and only THEN tag `v<NEW_MARKETING>` — tag-after-ship, the inverse of
+  mira-core's tag-before-build.
 
 ---
 
@@ -35,27 +60,31 @@ Single self-contained one-liners (no chains, no pipes) may run directly.
 
 ---
 
-## Step 1 — read current versions
+## Step 1 — read current versions and decide the next version
 
 ```bash
 bash ~/.claude/skills/mira-release/bin/mira_versions.sh
 ```
 
-Compute:
-- **NEW_BUILD** = current build + 1
-- **NEW_MARKETING** = `0.1.<NEW_BUILD>`
+Decide **NEW_MARKETING** (semantic `X.Y.Z`) from the user's intent, then compute **NEW_BUILD** per the scheme:
+- Patch bump (same minor as last release): **NEW_BUILD** = last build + 1.
+- New minor or major (`X.Y.0`): **NEW_BUILD** = **1** (reset).
 
 Report both, then continue.
 
 ---
 
-## Step 2 — bump build number
+## Step 2 — set the build number
 
+Edit `OllamaSearch.xcodeproj/project.pbxproj` with `replace_all: true`:
+- Replace `CURRENT_PROJECT_VERSION = <OLD>;` → `CURRENT_PROJECT_VERSION = <NEW_BUILD>;`
+
+Do NOT run `agvtool` — `CFBundleVersion` is `$(CURRENT_PROJECT_VERSION)`, so agvtool would replace the
+variable with a literal and reintroduce drift. Then verify the Info.plist guards:
 ```bash
-bash ~/.claude/skills/mira-release/bin/mira_bump.sh <NEW_BUILD>
+grep -E 'CFBundleVersion|CFBundleShortVersionString' ~/Documents/Projects/mira-apps/OllamaSearch/Info.plist
 ```
-
-The script runs the agvtool bump and prints the Info.plist guard line. It must show `$(MARKETING_VERSION)`. If it shows a hardcoded string, restore it with Edit before continuing.
+Must read `$(CURRENT_PROJECT_VERSION)` and `$(MARKETING_VERSION)` respectively.
 
 ---
 
@@ -135,6 +164,11 @@ On auth failure, stop and report:
   macOS archive: /tmp/mira-macos-<NEW_BUILD>.xcarchive
   Manual fallback: Xcode > Organizer > Distribute App > TestFlight Internal Testing
 
+## Step 9b — export notarized .dmg
+Run:
+  bash ~/.claude/skills/mira-release/bin/mira_export_dmg.sh <NEW_BUILD> <NEW_MARKETING>
+Output must end with "✅ .dmg uploaded". If it fails with "no identity found", skip and warn — cert missing.
+
 ## Step 10 — post "What to Test" notes
 Run:
   python3 ~/.claude/skills/mira-release/bin/mira_release_notes.py <NEW_BUILD> "<RELEASE_NOTES>"
@@ -151,6 +185,7 @@ Return a single summary block:
   iOS upload:    OK/FAILED
   macOS archive: OK/FAILED
   macOS upload:  OK/FAILED
+  dmg:           OK/FAILED/SKIPPED
   Notes:         OK/WARNING/<error>
   Expire:        OK/WARNING/<error>
 Include any error lines from failed steps.
@@ -204,6 +239,7 @@ Released v<NEW_MARKETING> (build <NEW_BUILD>)
 | iOS      | ✅ succeeded | ✅ uploaded  |
 | macOS    | ✅ succeeded | ✅ uploaded  |
 
+dmg: ✅ uploaded to GitHub release
 Notes: ✅ posted to TestFlight  |  Builds: ✅ expired N-4 and older
 GitHub: ✅ v<NEW_MARKETING> released
 App Store Connect takes 2–5 min to process — build appears in TestFlight after that.
