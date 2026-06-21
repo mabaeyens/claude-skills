@@ -1,6 +1,6 @@
 ---
 name: mira-server
-description: Manage the Mira LaunchAgent (server.py). Accepts one argument: install | reload | restart | logs | status.
+description: Manage the Mira LaunchAgent (server.py). Accepts one argument: start | stop | install | reload | restart | logs | status.
 allowed-tools: Bash
 ---
 
@@ -8,7 +8,7 @@ The user invoked `/mira-server` with an optional argument. Parse the argument (d
 
 ## Paths
 
-- Plist source: `~/Documents/Projects/ollama-web-search/com.mab.mira.plist`
+- Plist source: `~/Documents/Projects/mira-core/com.mab.mira.plist`
 - Plist target: `~/Library/LaunchAgents/com.mab.mira.plist`
 - Service label: `com.mab.mira`
 - Log file: `/tmp/com.mab.mira.log`
@@ -16,10 +16,24 @@ The user invoked `/mira-server` with an optional argument. Parse the argument (d
 
 ## Operations
 
+### start
+Load the LaunchAgent (plist must already be in `~/Library/LaunchAgents/`).
+```bash
+launchctl load ~/Library/LaunchAgents/com.mab.mira.plist
+```
+Then run the `status` check.
+
+### stop
+Unload the LaunchAgent, stopping the server.
+```bash
+launchctl unload ~/Library/LaunchAgents/com.mab.mira.plist
+```
+Then run the `status` check.
+
 ### install
 First-time setup. Copies the plist and loads the agent.
 ```bash
-cp ~/Documents/Projects/ollama-web-search/com.mab.mira.plist ~/Library/LaunchAgents/
+cp ~/Documents/Projects/mira-core/com.mab.mira.plist ~/Library/LaunchAgents/
 launchctl load ~/Library/LaunchAgents/com.mab.mira.plist
 ```
 Then run the `status` check.
@@ -28,7 +42,7 @@ Then run the `status` check.
 Use after any change to server.py or the plist. Unloads, re-copies, reloads.
 ```bash
 launchctl unload ~/Library/LaunchAgents/com.mab.mira.plist
-cp ~/Documents/Projects/ollama-web-search/com.mab.mira.plist ~/Library/LaunchAgents/
+cp ~/Documents/Projects/mira-core/com.mab.mira.plist ~/Library/LaunchAgents/
 launchctl load ~/Library/LaunchAgents/com.mab.mira.plist
 ```
 Then run the `status` check.
