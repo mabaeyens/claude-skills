@@ -14,11 +14,17 @@ claude-skills/
     └── mira-release/     # bump version, archive, and upload Mira to TestFlight
         ├── SKILL.md
         └── bin/          # release helper scripts (bump, archive, upload, expire builds, ...)
-└── mlx/
-    ├── mlx-model-card/   # write/refresh real model card descriptions for mlx-community conversions
+├── mlx/
+│   ├── mlx-model-card/   # write/refresh real model card descriptions for mlx-community conversions
+│   │   └── SKILL.md
+│   └── mlx-convert/      # end-to-end: convert, verify, card, upload, track -- wraps mlx-conversions/scripts/pipeline.py
+│       └── SKILL.md
+└── qseow/
+    ├── qseow-preflight/  # read-only release readiness check for the QSEoW MCP server
     │   └── SKILL.md
-    └── mlx-convert/      # end-to-end: convert, verify, card, upload, track -- wraps mlx-conversions/scripts/pipeline.py
-        └── SKILL.md
+    └── qseow-release/    # bump, tag, push and publish a qseow-mcp release
+        ├── SKILL.md
+        └── bin/          # preflight + release helper scripts (bash, Windows/Git Bash)
 ```
 
 Skills are grouped by project under subdirectories. A `writing/` group also exists locally
