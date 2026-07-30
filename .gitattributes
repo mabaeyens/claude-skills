@@ -1,0 +1,6 @@
+# Shell scripts must check out with LF even on Windows. With core.autocrlf=true
+# they would arrive with CRLF, and bash fails on the carriage return with
+# "$'\r': command not found" — the qseow group's bin/ scripts run under Git Bash
+# on a Windows machine, so this is not hypothetical.
+*.sh text eol=lf
+*.py text eol=lf
