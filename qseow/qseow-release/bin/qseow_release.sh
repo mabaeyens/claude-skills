@@ -30,11 +30,25 @@ if ! grep -q "^## \[$VERSION\]" CHANGELOG.md; then
   echo "REFUSING: CHANGELOG.md has no '## [$VERSION]' heading — write it first"; exit 1
 fi
 
-# Exclude the deck material the user keeps untracked on purpose.
-git add -A -- ':!*.pptx' ':!deck_png' ':!build_deck*.py' ':!QSEoW-MCP-RD-Briefing.html'
+# Stage tracked files ONLY. `git add -A` once swept in .claude/worktrees/*,
+# recording three embedded git repos as gitlinks (mode 160000) with no
+# .gitmodules — which clones as three empty directories nobody can populate —
+# plus a file the user keeps untracked on purpose. A release commit should
+# carry the version bump and the CHANGELOG date, nothing the author has not
+# already chosen to track.
+git add -u
 echo "--- staged ---"
 git status --short
 echo "--------------"
+
+# Belt and braces: no release commit ever introduces a gitlink.
+if git diff --cached --numstat --diff-filter=A | cut -f3 | while read -r f; do
+     [ -n "$f" ] && [ "$(git ls-files -s -- "$f" | cut -d' ' -f1)" = "160000" ] && echo "$f"
+   done | grep -q .; then
+  echo "REFUSING: staged an embedded git repository (gitlink)"
+  git reset -q
+  exit 1
+fi
 
 # No Co-Authored-By trailer, no "Generated with" line. Standing global rule.
 git commit -m "Release v$VERSION: $SUMMARY"
