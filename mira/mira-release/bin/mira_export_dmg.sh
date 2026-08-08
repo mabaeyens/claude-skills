@@ -1,6 +1,13 @@
 #!/bin/bash
 # Usage: mira_export_dmg.sh <build> <version>
-# Exports a Developer ID-signed, notarized .dmg and attaches it to the GitHub release.
+# Exports a Developer ID-signed, notarized, stapled .dmg and prints its path.
+#
+# It does NOT upload. This runs at Step 9b, and the GitHub release it would
+# upload to is not created until Step 12 — releases are tagged after shipping,
+# not before, so at this point `v$VERSION` does not exist yet. The upload used to
+# live here and failed with "release not found" on every single release; it was
+# silently tolerated because notarization, the slow and fragile part, had already
+# succeeded by then. Step 12 attaches the file after creating the release.
 set -e
 BUILD="$1"; VERSION="$2"
 EXPORT_DIR="/tmp/mira-macos-direct-$BUILD"
@@ -32,11 +39,8 @@ xcrun notarytool submit "$DMG_PATH" \
 # 4. Staple the notarization ticket to the .dmg
 xcrun stapler staple "$DMG_PATH"
 
-# 5. Verify before uploading
+# 5. Verify the ticket is really attached, while there is still someone watching
 xcrun stapler validate "$DMG_PATH"
 
-# 6. Attach to the GitHub release
-/opt/homebrew/bin/gh release upload "v$VERSION" "$DMG_PATH" \
-  --repo mabaeyens/mira-apps --clobber
-
-echo "✅ .dmg uploaded: $DMG_PATH"
+echo "✅ .dmg notarized: $DMG_PATH"
+echo "   Step 12 attaches it after the release exists."

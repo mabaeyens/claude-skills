@@ -164,10 +164,12 @@ On auth failure, stop and report:
   macOS archive: /tmp/mira-macos-<NEW_BUILD>.xcarchive
   Manual fallback: Xcode > Organizer > Distribute App > TestFlight Internal Testing
 
-## Step 9b — export notarized .dmg
+## Step 9b — export and notarize the .dmg (no upload)
 Run:
   bash ~/.claude/skills/mira-release/bin/mira_export_dmg.sh <NEW_BUILD> <NEW_MARKETING>
-Output must end with "✅ .dmg uploaded". If it fails with "no identity found", skip and warn — cert missing.
+Output must end with "Step 12 attaches it after the release exists." Report the .dmg path in your summary.
+This step deliberately does not upload: the GitHub release does not exist until Step 12.
+If it fails with "no identity found", skip and warn — cert missing.
 
 ## Step 10 — post "What to Test" notes
 Run:
@@ -185,7 +187,7 @@ Return a single summary block:
   iOS upload:    OK/FAILED
   macOS archive: OK/FAILED
   macOS upload:  OK/FAILED
-  dmg:           OK/FAILED/SKIPPED
+  dmg:           OK/FAILED/SKIPPED  (path, if OK — Step 12 uploads it)
   Notes:         OK/WARNING/<error>
   Expire:        OK/WARNING/<error>
 Include any error lines from failed steps.
@@ -195,9 +197,13 @@ After the agent returns, read its summary and continue to Step 12.
 
 ---
 
-## Step 12 — update CHANGELOG.md and create GitHub release
+## Step 12 — update CHANGELOG.md, create the GitHub release, attach the .dmg
 
 Only run if the Haiku agent reported iOS upload: OK.
+
+This is where the release first exists, which is why the .dmg is attached here
+and not in Step 9b. Tag-after-ship means there is no `v<NEW_MARKETING>` to upload
+to until step 2 below has run.
 
 1. Prepend a new section to `~/Projects/mira-apps/CHANGELOG.md` — use Edit, insert after the `# Changelog` line:
 
@@ -219,12 +225,25 @@ Only run if the Haiku agent reported iOS upload: OK.
    git push origin v<NEW_MARKETING>
    ```
 
-3. Create the GitHub release:
+3. Create the release and attach the .dmg, in that order — append both to the
+   same `/tmp/claude_mira_gh_release.sh` rather than running them loose:
    ```bash
    /opt/homebrew/bin/gh release create v<NEW_MARKETING> \
      --title "v<NEW_MARKETING>" \
      --notes "<RELEASE_NOTES>" \
      --repo mabaeyens/mira-apps
+
+   /opt/homebrew/bin/gh release upload v<NEW_MARKETING> /tmp/mira-<NEW_MARKETING>.dmg \
+     --repo mabaeyens/mira-apps --clobber
+   ```
+
+   Skip the upload only if the agent reported dmg: SKIPPED (signing cert
+   missing). If it reported a path, that path is the one to upload.
+
+4. Verify the asset actually landed — a release with no .dmg is the failure this
+   ordering exists to prevent, and it is invisible unless checked:
+   ```bash
+   /opt/homebrew/bin/gh release view v<NEW_MARKETING> --repo mabaeyens/mira-apps --json assets
    ```
 
 ---
