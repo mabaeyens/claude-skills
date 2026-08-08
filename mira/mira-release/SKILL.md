@@ -4,7 +4,7 @@ description: Bump version, archive, and upload Mira to TestFlight (iOS + macOS).
 allowed-tools: Bash, Read, Edit, Write, Agent
 ---
 
-The user invoked `/mira-release`. Work in `~/Documents/Projects/mira-apps/`.
+The user invoked `/mira-release`. Work in `~/Projects/mira-apps/`.
 
 Project: `OllamaSearch.xcodeproj`, scheme `OllamaSearch`, bundle ID `com.mab.OllamaSearch`.
 
@@ -82,7 +82,7 @@ Edit `OllamaSearch.xcodeproj/project.pbxproj` with `replace_all: true`:
 Do NOT run `agvtool` — `CFBundleVersion` is `$(CURRENT_PROJECT_VERSION)`, so agvtool would replace the
 variable with a literal and reintroduce drift. Then verify the Info.plist guards:
 ```bash
-grep -E 'CFBundleVersion|CFBundleShortVersionString' ~/Documents/Projects/mira-apps/OllamaSearch/Info.plist
+grep -E 'CFBundleVersion|CFBundleShortVersionString' ~/Projects/mira-apps/OllamaSearch/Info.plist
 ```
 Must read `$(CURRENT_PROJECT_VERSION)` and `$(MARKETING_VERSION)` respectively.
 
@@ -95,7 +95,7 @@ Edit `OllamaSearch.xcodeproj/project.pbxproj` with `replace_all: true`:
 
 Then verify the guard again:
 ```bash
-grep 'CFBundleShortVersionString' ~/Documents/Projects/mira-apps/OllamaSearch/Info.plist
+grep 'CFBundleShortVersionString' ~/Projects/mira-apps/OllamaSearch/Info.plist
 ```
 Must still read `$(MARKETING_VERSION)`.
 
@@ -104,7 +104,7 @@ Must still read `$(MARKETING_VERSION)`.
 ## Step 4 — verify encryption key
 
 ```bash
-grep 'ITSAppUsesNonExemptEncryption' ~/Documents/Projects/mira-apps/OllamaSearch/Info.plist
+grep 'ITSAppUsesNonExemptEncryption' ~/Projects/mira-apps/OllamaSearch/Info.plist
 ```
 
 If missing, add before `LSApplicationCategoryType` with Edit:
@@ -199,7 +199,7 @@ After the agent returns, read its summary and continue to Step 12.
 
 Only run if the Haiku agent reported iOS upload: OK.
 
-1. Prepend a new section to `~/Documents/Projects/mira-apps/CHANGELOG.md` — use Edit, insert after the `# Changelog` line:
+1. Prepend a new section to `~/Projects/mira-apps/CHANGELOG.md` — use Edit, insert after the `# Changelog` line:
 
    ```
 
@@ -211,7 +211,7 @@ Only run if the Haiku agent reported iOS upload: OK.
 2. Write and run `/tmp/claude_mira_gh_release.sh`:
    ```bash
    #!/bin/bash
-   cd ~/Documents/Projects/mira-apps
+   cd ~/Projects/mira-apps
    git add CHANGELOG.md
    git commit -m "docs: CHANGELOG v<NEW_MARKETING>"
    git push origin main

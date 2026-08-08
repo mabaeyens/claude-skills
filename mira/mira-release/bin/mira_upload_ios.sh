@@ -4,7 +4,7 @@ set -e
 BUILD="$1"
 xcodebuild -exportArchive \
   -archivePath /tmp/mira-ios-$BUILD.xcarchive \
-  -exportOptionsPlist ~/Documents/Projects/mira-apps/ExportOptions-iOS.plist \
+  -exportOptionsPlist ~/Projects/mira-apps/ExportOptions-iOS.plist \
   -exportPath /tmp/mira-ios-export-$BUILD \
   -allowProvisioningUpdates \
   2>&1 | tail -10

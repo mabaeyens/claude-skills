@@ -4,7 +4,7 @@
 set -e
 VERSION="$1"
 BUILD="$2"
-cd ~/Documents/Projects/mira-apps
+cd ~/Projects/mira-apps
 git pull origin main
 git add OllamaSearch.xcodeproj/project.pbxproj OllamaSearch/Info.plist
 git diff --cached --stat

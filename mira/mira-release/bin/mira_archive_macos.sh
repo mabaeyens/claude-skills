@@ -3,7 +3,7 @@
 set -e
 BUILD="$1"
 xcodebuild clean archive \
-  -project ~/Documents/Projects/mira-apps/OllamaSearch.xcodeproj \
+  -project ~/Projects/mira-apps/OllamaSearch.xcodeproj \
   -scheme OllamaSearch \
   -destination "generic/platform=macOS" \
   -archivePath /tmp/mira-macos-$BUILD.xcarchive \

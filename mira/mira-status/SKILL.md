@@ -10,10 +10,10 @@ Run all commands below in parallel, then present the structured snapshot at the 
 
 **Repo history (parallel):**
 ```bash
-git -C ~/Documents/Projects/mira-core log --oneline -5
+git -C ~/Projects/mira-core log --oneline -5
 ```
 ```bash
-git -C ~/Documents/Projects/mira-apps log --oneline -5
+git -C ~/Projects/mira-apps log --oneline -5
 ```
 
 **Server process and health (parallel):**
@@ -30,8 +30,18 @@ tail -25 /tmp/com.mab.mira.log 2>/dev/null || echo "no log"
 ```
 
 **Backlog files (parallel reads):**
-- `/Users/miguel/.claude/projects/-Users-miguel-Documents-Projects-mira-core/memory/project_backlog.md`
-- `/Users/miguel/.claude/projects/-Users-miguel-Documents-Projects-mira-apps/memory/backlog_testflight.md`
+- `/Users/miguel/.claude/projects/-Users-miguel-Projects-mira-core/memory/MEMORY.md`
+- `/Users/miguel/.claude/projects/-Users-miguel-Projects-mira-apps/memory/backlog_testflight.md`
+
+Both paths contain `-Users-miguel-Projects-`, not `-Users-miguel-Documents-Projects-`:
+Claude keys these directories on the project's cwd, and the tree moved out of iCloud
+on 2026-08-02. The old directories were deleted on 2026-08-08.
+
+The mira-core entry is the memory *index*, not a backlog file. There has never been a
+`project_backlog.md` for mira-core — the only one on disk belongs to
+`ollama-web-search`, the name mira-core had before it was renamed, so the old
+reference here resolved to nothing and read as "no backlog" rather than failing.
+`MEMORY.md` is the stable name that links out to the current dated state file.
 
 ## Output format
 

@@ -8,7 +8,7 @@ The user invoked `/mira-server` with an optional argument. Parse the argument (d
 
 ## Paths
 
-- Plist source: `~/Documents/Projects/mira-core/com.mab.mira.plist`
+- Plist source: `~/Projects/mira-core/com.mab.mira.plist`
 - Plist target: `~/Library/LaunchAgents/com.mab.mira.plist`
 - Service label: `com.mab.mira`
 - Log file: `/tmp/com.mab.mira.log`
@@ -33,7 +33,7 @@ Then run the `status` check.
 ### install
 First-time setup. Copies the plist and loads the agent.
 ```bash
-cp ~/Documents/Projects/mira-core/com.mab.mira.plist ~/Library/LaunchAgents/
+cp ~/Projects/mira-core/com.mab.mira.plist ~/Library/LaunchAgents/
 launchctl load ~/Library/LaunchAgents/com.mab.mira.plist
 ```
 Then run the `status` check.
@@ -42,7 +42,7 @@ Then run the `status` check.
 Use after any change to server.py or the plist. Unloads, re-copies, reloads.
 ```bash
 launchctl unload ~/Library/LaunchAgents/com.mab.mira.plist
-cp ~/Documents/Projects/mira-core/com.mab.mira.plist ~/Library/LaunchAgents/
+cp ~/Projects/mira-core/com.mab.mira.plist ~/Library/LaunchAgents/
 launchctl load ~/Library/LaunchAgents/com.mab.mira.plist
 ```
 Then run the `status` check.

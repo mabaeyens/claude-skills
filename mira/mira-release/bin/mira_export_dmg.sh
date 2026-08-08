@@ -10,7 +10,7 @@ CREDS="$HOME/.appstoreconnect/mira-release-credentials"
 # 1. Export with Developer ID signing
 xcodebuild -exportArchive \
   -archivePath "/tmp/mira-macos-$BUILD.xcarchive" \
-  -exportOptionsPlist "$HOME/Documents/Projects/mira-apps/ExportOptions-macOS-direct.plist" \
+  -exportOptionsPlist "$HOME/Projects/mira-apps/ExportOptions-macOS-direct.plist" \
   -exportPath "$EXPORT_DIR" \
   -allowProvisioningUpdates 2>&1 | tail -5
 

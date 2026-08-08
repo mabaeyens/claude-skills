@@ -35,12 +35,12 @@ Skills are grouped by project under subdirectories. A `writing/` group also exis
 **Claude Code (CLI):**
 ```bash
 # Clone repo
-git clone git@github.com:mabaeyens/claude-skills.git ~/Documents/Projects/claude-skills  # macOS
+git clone git@github.com:mabaeyens/claude-skills.git ~/Projects/claude-skills  # macOS
 # or wherever you keep projects on the target machine
 
 # Symlink each skill into ~/.claude/skills/
 mkdir -p ~/.claude/skills
-for skill_dir in ~/Documents/Projects/claude-skills/*/; do
+for skill_dir in ~/Projects/claude-skills/*/; do
   for skill in "$skill_dir"*/; do
     name=$(basename "$skill")
     ln -sf "$skill" ~/.claude/skills/"$name"
@@ -54,7 +54,7 @@ Skills are not yet supported natively outside Claude Code. Copy the `SKILL.md` c
 ## Adding a new skill
 
 ```bash
-mkdir -p ~/Documents/Projects/claude-skills/<group>/<skill-name>
+mkdir -p ~/Projects/claude-skills/<group>/<skill-name>
 # write SKILL.md
-ln -s ~/Documents/Projects/claude-skills/<group>/<skill-name> ~/.claude/skills/<skill-name>
+ln -s ~/Projects/claude-skills/<group>/<skill-name> ~/.claude/skills/<skill-name>
 ```
